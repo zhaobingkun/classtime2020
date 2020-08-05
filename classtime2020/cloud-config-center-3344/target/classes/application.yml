@@ -1,0 +1,28 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          skipSslValidation: true
+          uri: https://github.com/zhaobingkun/zhaobingkun-139.com.git #github上仓库名
+          #搜索目录，相当于是git上 Repositories 名字
+          search-paths:
+            - mergeTest
+      #读取分支
+      label: master
+  #rabbitmq:
+  #  host: localhost
+  #  port: 5672
+  #  username: guest
+  #  password: guest
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
