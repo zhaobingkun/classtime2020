@@ -7,6 +7,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 public class DataStreamFlatMapOperator {
+    /**
+     * flatmap可以理解为将元素摊平，每个元素可以变为0个、1个、或者多个元素。
+     * Summary:
+     *      FlatMap: 一行变任意行(0~多行)
+     */
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         // 输入: 英文电影台词

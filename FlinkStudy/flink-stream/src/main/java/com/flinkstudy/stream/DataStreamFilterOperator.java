@@ -9,6 +9,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import java.util.Arrays;
 
 public class DataStreamFilterOperator {
+
+    /**
+     * filter是进行筛选。
+     * Summary:
+     *      Fliter: 过滤出需要的数据
+     */
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 

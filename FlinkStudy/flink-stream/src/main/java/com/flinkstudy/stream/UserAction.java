@@ -7,12 +7,12 @@ public class UserAction {
     private  String productID;   //=productID1, p
     private  int   ProductPrice;  //=80
 
-    public UserAction(String userID, int eventTime, String eventType, String productID, int roductPrice) {
+    public UserAction(String userID, int eventTime, String eventType, String productID, int ProductPrice) {
         this.userID = userID;
         this.eventTime = eventTime;
         this.eventType = eventType;
         this.productID = productID;
-        this.ProductPrice = roductPrice;
+        this.ProductPrice = ProductPrice;
     }
 
     @Override
