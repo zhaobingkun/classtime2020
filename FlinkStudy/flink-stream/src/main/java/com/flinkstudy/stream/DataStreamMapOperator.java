@@ -8,7 +8,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import java.util.Arrays;
 
 public class DataStreamMapOperator {
-
+    /**
+     * map可以理解为映射，对每个元素进行一定的变换后，映射为另一个元素。
+     * Summary:
+     *      Map: 一对一转换
+     */
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         // 输入: 用户行为。某个用户在某个时刻点击或浏览了某个商品，以及商品的价格。
