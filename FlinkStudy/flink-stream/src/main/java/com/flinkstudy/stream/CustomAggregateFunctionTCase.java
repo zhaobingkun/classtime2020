@@ -70,7 +70,7 @@ public class CustomAggregateFunctionTCase {
 
         @Override
         public Integer add(Tuple2<String,Long> value, Integer accumulator){
-            return accumulator+=10;
+            return ++accumulator;
         }
 
         @Override

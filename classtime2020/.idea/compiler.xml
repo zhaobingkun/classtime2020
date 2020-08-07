@@ -15,11 +15,11 @@
         <module name="cloud-provider-payment8001" />
         <module name="cloud-gateway-gateway9527" />
         <module name="cloud-consumer-feign-hystrix-order80" />
+        <module name="cloud-config-center-3344" />
         <module name="cloud-providerconsul-payment8006" />
-        <module name="cloud-consumer-feign-order8081" />
         <module name="cloud-consumer-order8081" />
         <module name="cloud-provider-hystrix-payment8001" />
-        <module name="cloud-config-center-3344" />
+        <module name="cloud-consumer-feign-order8081" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
