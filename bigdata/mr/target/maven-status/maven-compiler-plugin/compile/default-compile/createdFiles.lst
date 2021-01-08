@@ -1,0 +1,3 @@
+com\bigdata\mr\JobMain.class
+com\bigdata\mr\WordMapper.class
+com\bigdata\mr\WordReduce.class
