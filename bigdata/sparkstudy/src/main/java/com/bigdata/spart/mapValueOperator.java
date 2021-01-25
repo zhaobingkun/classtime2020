@@ -94,7 +94,6 @@ public class mapValueOperator {
         stringIntegerJavaPairRDD.foreach(data -> {
             System.out.println("Key="+data._1() + " Average=" + data._2());
         });
-        //stop sc
         sc.stop();
         sc.close();
     }
