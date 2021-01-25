@@ -1,4 +1,4 @@
-package com.bigdata.spart;
+package com.bigdata.spark;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
