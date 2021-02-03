@@ -18,9 +18,7 @@ public class sparkScore {
         df.printSchema();
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
         df.createOrReplaceTempView("score");
-        spark.sql("select  t1.course course,  t1.name name,  t1.score score  from ( select  course,  name,  score,  row_number() over(partition by course order by score desc ) top  from score) t1 where t1.top<=3").show();
-
-
+        spark.sql("select * from (select  course,  name,  score,  row_number() over(partition by course order by score desc)  rank  from score) where rank <=3").show();
 
     }
 }
