@@ -22,6 +22,8 @@ public class networkWordCount {
         //nc -l -p 1234
         JavaReceiverInputDStream<String> lines = jssc.socketTextStream("192.168.148.131", 1234, StorageLevel.MEMORY_ONLY());
 
+
+
         JavaDStream<String> stringJavaDStream = lines.flatMap(new FlatMapFunction<String, String>() {
             @Override
             public Iterator<String> call(String s) throws Exception {
@@ -47,6 +49,7 @@ public class networkWordCount {
         stringIntegerJavaPairDStream1.print();
         jssc.start();
         jssc.awaitTermination();
+        jssc.close();
 
     }
 }

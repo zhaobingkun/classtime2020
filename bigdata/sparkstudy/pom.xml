@@ -25,6 +25,7 @@
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
         <version>2.4.0</version>
+
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql -->
@@ -39,8 +40,45 @@
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-streaming_2.12</artifactId>
         <version>2.4.0</version>
+        <!--
+        不注掉会报错
         <scope>provided</scope>
+
+        -->
     </dependency>
+
+
+    <!-- park-streaming-flum
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming-flume_2.10</artifactId>
+        <version>2.1.0</version>
+    </dependency>
+e-->
+    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-flume -->
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming-flume_2.12</artifactId>
+        <version>2.4.1</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-flume-sink -->
+    <!--
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming-flume-sink_2.11</artifactId>
+        <version>2.1.0</version>
+
+    </dependency>
+    -->
+    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-flume-sink -->
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming-flume-sink_2.12</artifactId>
+        <version>2.4.1</version>
+    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-hive -->
     <dependency>
@@ -49,6 +87,8 @@
         <version>2.4.0</version>
         <scope>provided</scope>
     </dependency>
+
+
 
     <!-- https://mvnrepository.com/artifact/com.thoughtworks.paranamer/paranamer -->
     <dependency>
@@ -77,6 +117,12 @@
         <artifactId>junit</artifactId>
         <version>4.11</version>
         <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.hive</groupId>
+        <artifactId>hive-exec</artifactId>
+        <version>3.1.2</version>
+        <scope>compile</scope>
     </dependency>
 
 
