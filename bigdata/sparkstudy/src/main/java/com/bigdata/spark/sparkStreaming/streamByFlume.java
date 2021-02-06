@@ -29,11 +29,12 @@ public class streamByFlume {
             public String call(SparkFlumeEvent sparkFlumeEvent) throws Exception {
                 //得到的是字符数组，转成字符串
                 String bodyString = new String(sparkFlumeEvent.event().getBody().array(), "UTF-8");
+                System.out.println(bodyString);
                 return bodyString;
             }
         });
 
-        map.print();
+        //map.print();
 
         //压平
         JavaDStream<String> stringJavaDStream = map.flatMap(new FlatMapFunction<String, String>() {
@@ -43,7 +44,7 @@ public class streamByFlume {
             }
         });
 
-        stringJavaDStream.print();
+        //stringJavaDStream.print();
 
         //
         JavaPairDStream<String, Integer> stringIntegerJavaPairDStream = stringJavaDStream.mapToPair(new PairFunction<String, String, Integer>() {
@@ -54,7 +55,7 @@ public class streamByFlume {
             }
         });
 
-        stringIntegerJavaPairDStream.print();
+        //stringIntegerJavaPairDStream.print();
 
         JavaPairDStream<String, Integer> stringIntegerJavaPairDStream1 = stringIntegerJavaPairDStream.reduceByKey(new Function2<Integer, Integer, Integer>() {
             @Override
@@ -64,6 +65,7 @@ public class streamByFlume {
         });
 
         stringIntegerJavaPairDStream1.print();
+
 
         jssc.start();
         jssc.awaitTermination();
