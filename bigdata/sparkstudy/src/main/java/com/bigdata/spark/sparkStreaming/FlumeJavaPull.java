@@ -25,6 +25,24 @@ import java.util.Iterator;
 
 public class FlumeJavaPull {
 
+    //将不可见字符\X07转换成","  \X06转换成""
+    public static String ascii2Str(String str){
+        String newStr = "";
+        char[] cs = str.toCharArray();
+        int j = 0;
+        for(int i : cs){
+            if(i == 7){
+                newStr += ",";
+            }else if(i==6){
+                newStr += "";
+            }else{
+                newStr += str.charAt(j);
+            }
+            j++;
+        }
+        return newStr;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         Logger.getLogger("org.apache.spark").setLevel(Level.ERROR);
 
@@ -46,7 +64,9 @@ public class FlumeJavaPull {
         JavaDStream<String> words = map.flatMap(new FlatMapFunction<String, String>() {
             @Override
             public Iterator<String> call(String input) throws Exception {
-                return Arrays.asList(input.split("\\|")).iterator();
+
+
+                return Arrays.asList(input.split(" ")).iterator();
             }
         });
 
@@ -55,7 +75,10 @@ public class FlumeJavaPull {
         JavaPairDStream<String, Integer> wordcount = words.mapToPair(new PairFunction<String, String, Integer>() {
             @Override
             public Tuple2<String, Integer> call(String word) {
-                System.out.println("word="+word);
+                System.out.println("word= "+word+" len="+word.length()+"\n");
+                //String newStr =  ascii2Str(word);
+
+                //System.out.print("new str == "+newStr+"\n");
                 return new Tuple2<String, Integer>(word, 1);
             }
         });
@@ -75,4 +98,7 @@ public class FlumeJavaPull {
         ssc.awaitTermination();
 
     }
+
+
+
 }
