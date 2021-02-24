@@ -14,10 +14,13 @@ import java.util.Properties;
 public class WordCountByKafka {
 
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env  = StreamExecutionEnvironment.createLocalEnvironment();
+        //StreamExecutionEnvironment env  = StreamExecutionEnvironment.createLocalEnvironment();
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        //env.setParallelism(2);
         String topic = "FlinkStudy-01";
         Properties consumerProperties = new Properties();
-        consumerProperties.setProperty("bootstrap.servers","hadoop31:9092,hadoop32:9092,hadoop33:9092");
+        //consumerProperties.setProperty("bootstrap.servers","hadoop31:9092,hadoop32:9092,hadoop33:9092");
+        consumerProperties.setProperty("bootstrap.servers","hadoop32:9092,hadoop33:9092");
         consumerProperties.setProperty("group.id","flinkstudy01_consumer");
         FlinkKafkaConsumer010<String> myConsumer =
                 new FlinkKafkaConsumer010<>(topic, new SimpleStringSchema(), consumerProperties);
