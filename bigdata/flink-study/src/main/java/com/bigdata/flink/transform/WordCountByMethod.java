@@ -1,4 +1,4 @@
-package com.bigdata.flink;
+package com.bigdata.flink.transform;
 
 import com.bigdata.flink.flinkmethod.FlatMapMethod;
 import com.bigdata.flink.model.WordCountModel;

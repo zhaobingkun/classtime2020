@@ -10,6 +10,13 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+
+/**
+ * 数据源：1 2 3 4 5.....源源不断过来
+ * 通过map打印一下接受到数据
+ * 通过filter过滤一下数据，我们只需要偶数
+ */
+
 public class MapDemo {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

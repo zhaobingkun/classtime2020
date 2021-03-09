@@ -1,4 +1,4 @@
-package com.bigdata.flink;
+package com.bigdata.flink.transform;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
