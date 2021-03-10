@@ -12,6 +12,20 @@ import org.apache.spark.sql.SparkSession;
 import scala.Function1;
 
 public class Tools {
+
+
+    static {
+        try {
+            // 设置 HADOOP_HOME 目录
+            System.setProperty("hadoop.home.dir", "E:\\download\\dllwinutils");
+            // 加载库文件
+            System.load("E:\\download\\dllwinutils\\hadoop.dll");
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println("Native code library failed to load.\n" + e);
+            System.exit(1);
+        }
+    }
+
     //1.判断参数个数
     //2.接收参数
     //3.配置序列化方式
@@ -37,7 +51,7 @@ public class Tools {
         //String dataPath = args[0];
         String dataPath = "D:\\javas\\bigdata\\data.txt";
         //String outputPath = args[1];
-        String outputPath = "D:\\sparkbigdatas\\";
+        String outputPath = "D:\\sparkbigdata\\";
         //String compressionCode = args[2];
         String compressionCode="Snappy";
         //3.配置序列化方式
@@ -53,14 +67,16 @@ public class Tools {
         org.apache.spark.sql.SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
         //5.读取文件,进行相应操作
 
+        JavaRDD<Logs> logsRDD = spark.read().textFile(dataPath).javaRDD().map(s -> Logs.line2Log(s));
 
-
+        //spark.read().textFile(dataPath).javaRDD().flatMap(s -> );
+        /*
         JavaRDD<Logs> logsRDD = spark.read().textFile(dataPath).javaRDD().map(new Function<String, Logs>() {
             @Override
             public Logs call(String s) throws Exception {
                 return Logs.line2Log(s);
             }
-        });
+        });*/
 
         Dataset<Row> df =spark.createDataFrame(logsRDD,Logs.class);
 

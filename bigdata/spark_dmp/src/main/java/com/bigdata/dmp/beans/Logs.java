@@ -37,6 +37,7 @@ public class Logs {
     private Integer ispid; //Int, //运营商id
     private String ispname; //String, //运营商名称
     private Integer networkmannerid; //Int, //联网方式id
+
     private String networkmannername; //String, //联网方式名称
     private Integer iseffective; //Int, //有效标识（有效指可以正常计费的）(0：无效 1：有效)
     private Integer isbilling; //Int, //是否收费（0：未收费 1：已收费）
@@ -97,13 +98,33 @@ public class Logs {
     private String channelid; //String, //频道ID
     private Integer mediatype; //Int
 
+    public Logs() {
 
-    public Logs  line2Log (String line){
+    }
+
+
+    public static Logs  line2Log (String line){
         if (StringUtils.isNotEmpty(line)){
             String[] fields = line.split(",");
-            Logs logs = new Logs(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), fields[5], fields[6], Integer.parseInt(fields[7]), Integer.parseInt(fields[8]), Double.parseDouble(fields[9]), Double.parseDouble(fields[10]),
-                    fields[11], fields[12], fields[13], fields[14], fields[15], fields[16], Integer.parseInt(fields[17]), fields[18], fields[19], Integer.parseInt(fields[20]),
-                    Integer.parseInt(fields[21]), fields[22], fields[23], fields[24], fields[25],Integer.parseInt(fields[26]), fields[27], Integer.parseInt(fields[28]), fields[29], Integer.parseInt(fields[30]),
+            for(int i=0;i<fields.length;i++){
+                System.out.println(i+"======="+fields[i]);
+
+            }
+            Logs logs = new Logs(
+                    fields[0],
+                    Integer.parseInt(fields[1]),
+                    Integer.parseInt(fields[2]),
+                    Integer.parseInt(fields[3]),
+                    Integer.parseInt(fields[4]),
+                    fields[5], fields[6],
+                    Integer.parseInt(fields[7]), Integer.parseInt(fields[8]), Double.parseDouble(fields[9]),
+                    Double.parseDouble(fields[10]),
+                    fields[11], fields[12], fields[13], fields[14], fields[15], fields[16],
+                    Integer.parseInt(fields[17]), fields[18], fields[19],
+                    Integer.parseInt(fields[20]),
+                    Integer.parseInt(fields[21]),
+                    fields[22], fields[23], fields[24], fields[25],Integer.parseInt(fields[26]), fields[27],
+                    Integer.parseInt(fields[28]), fields[29], Integer.parseInt(fields[30]),
                     Integer.parseInt(fields[31]), Integer.parseInt(fields[32]), fields[33], Integer.parseInt(fields[34]), Integer.parseInt(fields[35]), Integer.parseInt(fields[36]), fields[37], Integer.parseInt(fields[38]), Integer.parseInt(fields[39]), Double.parseDouble(fields[40]),
                     Double.parseDouble(fields[41]), Integer.parseInt(fields[42]), fields[43], Double.parseDouble(fields[44]), Double.parseDouble(fields[45]), fields[46], fields[47], fields[48], fields[49], fields[50],
                     fields[51], fields[52], fields[53], fields[54], fields[55], fields[56], Integer.parseInt(fields[57]), Double.parseDouble(fields[58]), Integer.parseInt(fields[59]), Integer.parseInt(fields[60]),
