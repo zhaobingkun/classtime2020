@@ -20,6 +20,8 @@ public  class Utils {
         List<Integer> ages = new ArrayList<>(Arrays.asList(24, 25, 27));
         List<String> ages2 = new ArrayList<>(Arrays.asList("24", "25", "27"));
 
+        List mapto = new ArrayList();
+
         Map<String,Integer> amap = new HashMap<String,Integer>();
         Map<String,Integer> bmap = new HashMap<String,Integer>();
         Map<String,Integer> cmap = new HashMap<String,Integer>();
@@ -34,9 +36,12 @@ public  class Utils {
         System.out.println(cmap);
 
 
-        List<Object> list1= cmap.entrySet().stream().map(et ->et.getKey()+"_"+et.getValue()).collect(Collectors.toList());
+        List<Tuple2<String,Integer>> list1= cmap.entrySet().stream().map(
+                et ->{
+           return  new Tuple2<String,Integer>(et.getKey(),et.getValue());
+        }).collect(Collectors.toList());
         list1.forEach(obj-> System.out.println(obj));
-       //names.addAll(ages2);
+        //names.addAll(ages2);
         //System.out.println(names);
 
         /******************************************/
