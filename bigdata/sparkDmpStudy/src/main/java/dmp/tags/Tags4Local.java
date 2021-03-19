@@ -11,7 +11,7 @@ public class Tags4Local {
      * @param logs
      * @return
      */
-    public Map makeTags (Logs logs){
+    public static Map  makeTags (Logs logs){
         Map<String,Integer> localMap = new HashMap<String,Integer>();
         if(logs.getAdspacetype()<10){
             localMap.put("LC0"+logs.getAdspacetype()+"",1);

@@ -13,7 +13,7 @@ public class Tags4Area {
      * @param logs
      * @return
      */
-    public Map  makeTags(Logs logs){
+    public static Map  makeTags(Logs logs){
         Map<String,Integer> areaMap = new HashMap<String,Integer>();
 
         if (StringUtils.isNotEmpty(logs.getProvincename())) {

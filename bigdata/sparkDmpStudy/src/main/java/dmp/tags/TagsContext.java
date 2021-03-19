@@ -4,6 +4,7 @@ import com.google.inject.internal.cglib.core.$LocalVariablesSorter;
 import dmp.beans.Logs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
@@ -16,9 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class TagsContext {
+
     public static void main(String[] args) {
         //判断参数
         /**
@@ -41,7 +44,7 @@ public class TagsContext {
         conf.registerKryoClasses(new Class[]{Logs.class});
 
         //初始化程序入口
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaSparkContext  sc  = new JavaSparkContext(conf);
         //生成App广播变量
         JavaPairRDD<String, String> javaPairRDD = sc.textFile(appMappingPath, 1).mapToPair(new PairFunction<String, String, String>() {
             @Override
@@ -53,14 +56,11 @@ public class TagsContext {
 
         Map<String, String> appMap = javaPairRDD.collectAsMap();
         Broadcast<Map<String, String>> broadcast = sc.broadcast(appMap);
-
 /*
         for(Map.Entry<String,String> entry : appMap.entrySet()){
             System.out.println(entry.getKey()+","+entry.getValue());
         }
 */
-
-
         //生成设备的广播变量
         JavaPairRDD<String, String> deviceJavaPairRDD = sc.textFile(deviceMappingPath).mapToPair(new PairFunction<String, String, String>() {
             @Override
@@ -71,13 +71,13 @@ public class TagsContext {
         });
 
         Map<String, String> deviceMap = deviceJavaPairRDD.collectAsMap();
-        for (Map.Entry<String, String> entry : deviceMap.entrySet()) {
+
+/*        for (Map.Entry<String, String> entry : deviceMap.entrySet()) {
             System.out.println(entry.getKey() + "," + entry.getValue());
-        }
+        }*/
 
 
         //读取日志,打标签
-
         JavaPairRDD<String, List<Tuple2<String, Integer>>> userAndTagsList = sc.textFile(inputLogPath).map(s -> {
             Logs logs = Logs.line2Log(s);
             Map<String, Integer> localTag = Tags4Local.makeTags(logs);
@@ -98,7 +98,6 @@ public class TagsContext {
                     et -> {
                         return new Tuple2<String, Integer>(et.getKey(), et.getValue());
                     }).collect(Collectors.toList());
-
             return new Tuple2<String, List<Tuple2<String, Integer>>>(userid, listUserTag);
         }).filter(new Function<Tuple2<String, List<Tuple2<String, Integer>>>, Boolean>() {
             @Override
@@ -113,35 +112,24 @@ public class TagsContext {
         }).reduceByKey(new Function2<List<Tuple2<String, Integer>>, List<Tuple2<String, Integer>>, List<Tuple2<String, Integer>>>() {
             @Override
             public List<Tuple2<String, Integer>> call(List<Tuple2<String, Integer>> tuple2s, List<Tuple2<String, Integer>> tuple2s2) throws Exception {
-
                 List<Tuple2<String, Integer>> listAll = new ArrayList<Tuple2<String, Integer>>();
                 listAll.addAll(tuple2s);
                 listAll.addAll(tuple2s2);
                 return listAll;
+            }  //后面如何做groupby和sum操作？？
+        }).mapToPair(new PairFunction<Tuple2<String, List<Tuple2<String, Integer>>>, String, List<Tuple2<String, Integer>>>() {
+            @Override
+            public Tuple2<String, List<Tuple2<String, Integer>>> call(Tuple2<String, List<Tuple2<String, Integer>>> tuple2) throws Exception {
+                List<Tuple2<String,Integer>> subList = new ArrayList<Tuple2<String,Integer>>();
+                subList = tuple2._2;
+                Map<String, Integer> collect = subList.parallelStream().collect(Collectors.groupingBy(s -> s._1, Collectors.summingInt(s -> s._2)));
+                List<Tuple2<String,Integer>> mapToList= collect.entrySet().stream().map(
+                        et ->{
+                            return  new Tuple2<String,Integer>(et.getKey(),et.getValue());
+                        }).collect(Collectors.toList());
+                return new Tuple2<String,List<Tuple2<String,Integer>>>(tuple2._1,mapToList);
             }
         });
-                   //.groupByKey();
-      // JavaPairRDD<String, Iterable<Tuple2<String, List<Tuple2<String, Integer>>>>> userAndTagsList = /stringIterableJavaPairRDD;
-
-                /*.mapToPair(new PairFunction<Tuple2<String, Iterable<List<Tuple2<String, Integer>>>>, String, List<Tuple2<String, Integer>>>() {
-            @Override
-            public Tuple2<String, List<Tuple2<String, Integer>>> call(Tuple2<String, Iterable<List<Tuple2<String, Integer>>>> pairs) throws Exception {
-                String key = pairs._1();
-                Iterable<List<Tuple2<String, Integer>>> iter = pairs._2();
-                int sum = 0;
-
-                List<Tuple2<String, Integer>> ll = new ArrayList<Tuple2<String, Integer>>();
-                for (List<Tuple2<String, Integer>> i : iter) {
-                    for (Tuple2<String, Integer> j : i) {
-                        sum += j._2;
-                        Tuple2 tt2 = new Tuple2<String, Integer>(j._1, sum);
-                        ll.add(tt2);
-                    }
-                }
-                return new Tuple2<String, List<Tuple2<String, Integer>>>(pairs._1, ll);
-            }
-
-        });*/
 
         userAndTagsList.foreach(s->{
             System.out.println(s._1+""+s._2);
@@ -152,7 +140,7 @@ public class TagsContext {
 }
 
 
-//后面如何做groupby和sum操作？？
+
 //释放资源
 
 
