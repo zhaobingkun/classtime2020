@@ -1,12 +1,19 @@
 package com.cmei.s2c;
 
+import com.google.gson.Gson;
 import com.ververica.cdc.debezium.DebeziumDeserializationSchema;
 import io.debezium.data.Envelope;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.util.Collector;
-import org.apache.kafka.common.protocol.types.Struct;
+
+import org.apache.kafka.connect.data.Field;
+import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.Struct;
+
 import org.apache.kafka.connect.source.SourceRecord;
+
+
 
 
 import java.util.HashMap;
@@ -34,6 +41,47 @@ public class JsonDebeziumDeserializationSchema implements DebeziumDeserializatio
              2,只存在 beforeStruct 就是delete数据
              3，只存在 afterStruct数据 就是insert数据
         */
+
+        if (after != null) {
+            //insert
+            Schema schema = after.schema();
+            HashMap<String, Object> hm = new HashMap<>();
+            for (Field field : schema.fields()) {
+                hm.put(field.name(), after.get(field.name()));
+            }
+            hashMap.put("data",hm);
+        }else if (before !=null){
+            //delete
+            Schema schema = before.schema();
+            HashMap<String, Object> hm = new HashMap<>();
+            for (Field field : schema.fields()) {
+                hm.put(field.name(), before.get(field.name()));
+            }
+            hashMap.put("data",hm);
+        }else if(before !=null && after !=null){
+            //update
+            Schema schema = after.schema();
+            HashMap<String, Object> hm = new HashMap<>();
+            for (Field field : schema.fields()) {
+                hm.put(field.name(), after.get(field.name()));
+            }
+            hashMap.put("data",hm);
+        }
+
+        String type = operation.toString().toLowerCase();
+        if ("create".equals(type)) {
+            type = "insert";
+        }else if("delete".equals(type)) {
+            type = "delete";
+        }else if("update".equals(type)) {
+            type = "update";
+        }
+
+        hashMap.put("type",type);
+
+        Gson gson = new Gson();
+        collector.collect(gson.toJson(hashMap));
+
     }
 
     @Override
