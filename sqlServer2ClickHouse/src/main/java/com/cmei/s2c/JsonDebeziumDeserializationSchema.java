@@ -19,6 +19,7 @@ import org.apache.kafka.connect.source.SourceRecord;
 import java.util.HashMap;
 
 public class JsonDebeziumDeserializationSchema implements DebeziumDeserializationSchema {
+
     @Override
     public void deserialize(SourceRecord sourceRecord, Collector collector) throws Exception {
         HashMap<String, Object> hashMap = new HashMap<>();
